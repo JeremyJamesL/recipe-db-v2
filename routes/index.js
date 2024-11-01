@@ -1,4 +1,5 @@
 import express from "express";
+import validateToken from "../utils/validateToken.js";
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -13,7 +14,7 @@ router.get("/sign-up", (req, res) => {
   res.render("sign-up.html");
 });
 
-router.get("/home", (req, res) => {
+router.get("/home", validateToken, (req, res) => {
   res.render("homepage.html");
 });
 
