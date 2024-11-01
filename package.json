@@ -1,0 +1,26 @@
+{
+  "name": "recipe-db-v2",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "serve": "nodemon --watch server.js  --watch views --watch routes --watch public --ext html,css,js",
+    "build:css": "tailwindcss -i ./public/src/global.css -o ./public/dist/global.css --watch",
+    "browser-sync": "browser-sync start --proxy 'localhost:3002' --files 'views/**/*, public/**/*, routes/**/*' --port 3000",
+    "start": "npm-run-all -p serve build:css browser-sync"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "mongodb": "^6.10.0",
+    "nunjucks": "^3.2.4"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.27.10",
+    "nodemon": "^2.0.22",
+    "npm-run-all": "^4.1.5",
+    "tailwindcss": "^3.4.14"
+  }
+}

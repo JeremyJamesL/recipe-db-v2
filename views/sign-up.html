@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% set title = 'Sign up' %} {% block content %}
+
+<div hx-ext="response-targets">
+  <form
+    hx-post="/api/users/add-user"
+    hx-target="#result"
+    hx-swap="innerHTML"
+    hx-target-400="#result"
+  >
+    <input
+      type="text"
+      placeholder="Username"
+      name="username"
+      class="text-black"
+    />
+    <input
+      type="password"
+      placeholder="Password"
+      name="password"
+      class="text-black"
+    />
+    <button class="text-white" type="submit">Submit</button>
+  </form>
+  <div id="result"></div>
+</div>
+
+{% endblock %}

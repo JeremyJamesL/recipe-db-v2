@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% set title = 'Home' %} {% block content %}
+<div id="loginModal" class="hidden">
+  <form action="">
+    <input type="text" name="" id="" placeholder="username" name="username" />
+    <input type="text" name="" id="" placeholder="password" name="password" />
+  </form>
+</div>
+
+<header class="flex justify-between items-center py-3">
+  <h1 class="font-bold text-lg">Recipe app</h1>
+</header>
+
+<section class="py-10 text-center">
+  <h1 class="text-3xl underline mb-20">
+    Welcome to your own personal Recipe Databse
+  </h1>
+
+  <a href="/login" id="login" class="bg-blue-500 p-2 rounded-lg">Log in</a>
+  <a href="/sign-up" id="login" class="bg-red-500 p-2 rounded-lg">Sign up</a>
+</section>
+
+{% endblock %}
