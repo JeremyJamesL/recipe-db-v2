@@ -1,14 +1,30 @@
-// document.body.addEventListener("htmx:afterRequest", (event) => {
-//   const token = event.detail.xhr.getResponseHeader("X-Auth-Token");
-//   if (token) {
-//     localStorage.setItem("authToken", token);
-//   }
-// });
+const loginForm = document.querySelector(".login-form");
 
-// document.body.addEventListener("htmx:configRequest", (event) => {
-//   const token = localStorage.getItem("authToken");
+async function handleLoginSubmit(e) {
+  e.preventDefault();
 
-//   if (token) {
-//     event.detail.headers["Authorization"] = `Bearer ${token}`;
-//   }
-// });
+  const formFields = new FormData(e.target);
+
+  const res = await fetch("http://localhost:3000/api/auth/authenticate", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: formFields.get("username"),
+      password: formFields.get("password"),
+    }),
+  });
+
+  const responseData = await res.json();
+  localStorage.setItem("user-token", responseData.token);
+
+  const newElement = document.createElement("div");
+  newElement.setAttribute("hx-get", "/some-endpoint");
+  newElement.setAttribute("hx-trigger", "load");
+
+  document.getElementById("container").appendChild(newElement);
+  htmx.process(newElement);
+}
+
+loginForm.addEventListener("submit", handleLoginSubmit);

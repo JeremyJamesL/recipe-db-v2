@@ -38,8 +38,6 @@ const getSingleUser = async function (req, res) {
     };
 
     res.status(200).json(user);
-    // const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "2h" });
-    // console.log("working");
   } catch (err) {
     res.status(400).send(`<span class="text-red-500">${err}</span>`);
   }
