@@ -2,7 +2,9 @@ import "dotenv/config";
 import jwt from "jsonwebtoken";
 
 const validateToken = (req, res, next) => {
-  const token = req.header["authorization"]?.split(" ")[1];
+  console.log("hitting", req.headers["authorization"]);
+  const token = req.headers["authorization"]?.split(" ")[1];
+  console.log(token);
 
   if (!token) return res.sendStatus(401);
 

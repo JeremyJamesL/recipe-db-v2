@@ -14,7 +14,7 @@ router.get("/sign-up", (req, res) => {
   res.render("sign-up.html");
 });
 
-router.get("/home", validateToken, (req, res) => {
+router.get("/home", (req, res) => {
   res.render("homepage.html");
 });
 

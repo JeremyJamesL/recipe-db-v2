@@ -4,7 +4,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "serve": "nodemon --watch server.js  --watch views --watch routes --watch public --ext html,css,js",
+    "serve": "nodemon --watch server.js  --watch views --watch routes --watch utils --watch public --watch controllers --ext html,css,js",
     "build:css": "tailwindcss -i ./public/src/global.css -o ./public/dist/global.css --watch",
     "browser-sync": "browser-sync start --proxy 'localhost:3002' --files 'views/**/*, public/**/*, routes/**/*' --port 3000",
     "start": "npm-run-all -p serve build:css browser-sync"

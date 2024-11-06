@@ -5,6 +5,7 @@ import nunjucks from "nunjucks";
 import bodyParser from "body-parser";
 import defaultRouter from "./routes/index.js";
 import userRouter from "./routes/users.js";
+import authRouter from "./routes/auth.js";
 const port = 3002;
 
 // Init app
@@ -34,6 +35,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use("/", defaultRouter);
 app.use("/api/users", userRouter);
+app.use("/api/auth", authRouter);
 
 app.listen(port, () => {
   `App listening on port ${port}`;
