@@ -1,5 +1,13 @@
 const loginForm = document.querySelector(".login-form");
 
+document.body.addEventListener("htmx:configRequest", function (evt) {
+  const token = localStorage.getItem("user-token");
+
+  if (token) {
+    evt.detail.headers["Authorization"] = token;
+  }
+});
+
 async function handleLoginSubmit(e) {
   e.preventDefault();
 
@@ -16,15 +24,11 @@ async function handleLoginSubmit(e) {
     }),
   });
 
-  const responseData = await res.json();
-  localStorage.setItem("user-token", responseData.token);
+  if (!res.ok) {
+    console.log("something went wrong");
+  }
 
-  const newElement = document.createElement("div");
-  newElement.setAttribute("hx-get", "/some-endpoint");
-  newElement.setAttribute("hx-trigger", "load");
-
-  document.getElementById("container").appendChild(newElement);
-  htmx.process(newElement);
+  window.location = "/home";
 }
 
 loginForm.addEventListener("submit", handleLoginSubmit);

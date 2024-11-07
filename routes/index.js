@@ -1,5 +1,9 @@
 import express from "express";
 import validateToken from "../utils/validateToken.js";
+import {
+  getAllRecipes,
+  getSingleRecipe,
+} from "../controllers/recipeController.js";
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -14,8 +18,16 @@ router.get("/sign-up", (req, res) => {
   res.render("sign-up.html");
 });
 
-router.get("/home", (req, res) => {
-  res.render("homepage.html");
+router.get("/home", validateToken, async (req, res) => {
+  const collection = req.app.locals.db.collection("recipes");
+  const recipes = await getAllRecipes("Jeremy89", collection);
+  res.render("homepage.html", { recipes });
+});
+
+router.get("/recipes/:id", async (req, res) => {
+  const collection = req.app.locals.db.collection("recipes");
+  const recipe = await getSingleRecipe(req.params.id, collection);
+  res.render("recipe.html", { singleRecipe: recipe });
 });
 
 export default router;

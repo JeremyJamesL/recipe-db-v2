@@ -3,10 +3,12 @@ import "dotenv/config";
 import express from "express";
 import nunjucks from "nunjucks";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import defaultRouter from "./routes/index.js";
 import userRouter from "./routes/users.js";
 import authRouter from "./routes/auth.js";
-const port = 3002;
+import recipeRouter from "./routes/recipes.js";
+const PORT = 3002;
 
 // Init app
 const app = express();
@@ -32,11 +34,15 @@ MongoClient.connect("mongodb://localhost:27017/")
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(express.json());
+app.use(cookieParser());
 app.use(bodyParser.json());
+
+// Routes
 app.use("/", defaultRouter);
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/recipes", recipeRouter);
 
-app.listen(port, () => {
-  `App listening on port ${port}`;
+app.listen(PORT, () => {
+  `App listening on port ${PORT}`;
 });

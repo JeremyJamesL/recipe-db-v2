@@ -588,8 +588,16 @@ video {
   }
 }
 
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
 .mb-20 {
   margin-bottom: 5rem;
+}
+
+.mb-5 {
+  margin-bottom: 1.25rem;
 }
 
 .block {
@@ -598,6 +606,10 @@ video {
 
 .flex {
   display: flex;
+}
+
+.grid {
+  display: grid;
 }
 
 .hidden {
@@ -612,12 +624,20 @@ video {
   width: 100%;
 }
 
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .items-center {
   align-items: center;
 }
 
 .justify-between {
   justify-content: space-between;
+}
+
+.gap-3 {
+  gap: 0.75rem;
 }
 
 .rounded-lg {

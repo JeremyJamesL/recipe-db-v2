@@ -1,0 +1,8 @@
+{% extends "base.html" %} {% block content %}
+<a href="/home" class="underline">Back to your recipes</a>
+<h1>This is a recipe</h1>
+
+<h2>{{ singleRecipe.title }}</h2>
+<img src="{{ singleRecipe.image }}" alt="{{ singleRecipe.title }}" />
+
+{% endblock %}

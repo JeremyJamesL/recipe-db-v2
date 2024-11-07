@@ -1,1 +1,10 @@
-<h1>Hello world!</h1>
+{% extends 'base.html' %} {% block content %}
+
+<h1 class="mb-2">Hello user!</h1>
+
+<form hx-post="/api/recipes/process" class="mb-5">
+  <input type="url" name="url" class="text-black" />
+  <button type="submit">Submit</button>
+</form>
+
+{% include "./subs/recipes.html" %} {% endblock %}

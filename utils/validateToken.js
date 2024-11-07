@@ -2,14 +2,18 @@ import "dotenv/config";
 import jwt from "jsonwebtoken";
 
 const validateToken = (req, res, next) => {
-  console.log("hitting", req.headers["authorization"]);
-  const token = req.headers["authorization"]?.split(" ")[1];
-  console.log(token);
+  const token = req.cookies.token;
 
-  if (!token) return res.sendStatus(401);
+  if (!token)
+    return res.status(401).render("error.html", {
+      title: "Unauthorized!",
+    });
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
+    if (err)
+      return res.status(403).render("error.html", {
+        title: "Something went wrong, contact the developer",
+      });
     req.user = user;
     next();
   });

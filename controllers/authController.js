@@ -15,7 +15,13 @@ const authenticateUser = async function (req, res) {
   const token = jwt.sign({ username }, process.env.JWT_SECRET, {
     expiresIn: "2hr",
   });
-  res.status(200).send({ token });
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Strict",
+  });
+  res.status(200).send("JWT has been set in cookie");
 };
 
 export { authenticateUser };
