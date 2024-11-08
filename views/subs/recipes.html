@@ -1,11 +1,14 @@
 <ul class="grid grid-cols-3 gap-3">
   {% for recipe in recipes %}
-  <a href="/recipes/{{ recipe.id }}">
-    <li class="recipe">
-      <img src="{{ recipe.image }}" alt="" />
-      <h2>{{ recipe.title }}</h2>
-      <p>{{ recipe.description }}</p>
-    </li>
-  </a>
+  <li
+    class="recipe cursor-pointer"
+    hx-get="/recipes/{{ recipe.id }}"
+    hx-target=".homepage-content"
+    hx-swap="innerHTML"
+  >
+    <img src="{{ recipe.image }}" alt="" />
+    <h2>{{ recipe.title }}</h2>
+    <p>{{ recipe.description }}</p>
+  </li>
   {% endfor %}
 </ul>

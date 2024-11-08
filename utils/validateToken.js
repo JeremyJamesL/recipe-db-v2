@@ -10,12 +10,11 @@ const validateToken = (req, res, next) => {
     });
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err)
-      return res.status(403).render("error.html", {
-        title: "Something went wrong, contact the developer",
-      });
-    req.user = user;
-    next();
+    if (err) res.redirect("/");
+    else {
+      req.user = user;
+      next();
+    }
   });
 };
 

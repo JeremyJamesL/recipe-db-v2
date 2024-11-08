@@ -1,8 +1,16 @@
 {% extends "base.html" %} {% block content %}
-<a href="/home" class="underline">Back to your recipes</a>
+<a
+  hx-get="/home"
+  hx-target=".homepage-content"
+  hx-swap="outerHTML"
+  class="underline cursor-pointer"
+>
+  Back to your recipes
+</a>
 <h1>This is a recipe</h1>
 
 <h2>{{ singleRecipe.title }}</h2>
 <img src="{{ singleRecipe.image }}" alt="{{ singleRecipe.title }}" />
+<a href="{{ singleRecipe.url }}">Visit recipe URL</a>
 
 {% endblock %}

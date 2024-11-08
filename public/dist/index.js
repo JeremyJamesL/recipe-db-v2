@@ -1,12 +1,12 @@
 const loginForm = document.querySelector(".login-form");
 
-document.body.addEventListener("htmx:configRequest", function (evt) {
-  const token = localStorage.getItem("user-token");
+// document.body.addEventListener("htmx:configRequest", function (evt) {
+//   const token = localStorage.getItem("user-token");
 
-  if (token) {
-    evt.detail.headers["Authorization"] = token;
-  }
-});
+//   if (token) {
+//     evt.detail.headers["Authorization"] = token;
+//   }
+// });
 
 async function handleLoginSubmit(e) {
   e.preventDefault();
@@ -30,5 +30,4 @@ async function handleLoginSubmit(e) {
 
   window.location = "/home";
 }
-
-loginForm.addEventListener("submit", handleLoginSubmit);
+if (loginForm) loginForm.addEventListener("submit", handleLoginSubmit);
