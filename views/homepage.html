@@ -2,7 +2,12 @@
 
 <div class="homepage-content">
   <h1 class="mb-2">Hello user!</h1>
-  <form hx-post="/api/recipes/processGetAll" class="mb-5">
+  <form
+    hx-post="/api/recipes/processGetAll"
+    hx-target=".homepage-content"
+    hx-swap="outerHTML"
+    class="mb-5"
+  >
     <input type="url" name="url" class="text-black" />
     <button type="submit">Submit</button>
   </form>

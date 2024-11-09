@@ -1,12 +1,22 @@
 import express from "express";
 const router = express.Router();
-import { processRecipe } from "../controllers/recipeController.js";
-import { getAllRecipes } from "../controllers/recipeController.js";
+import {
+  processRecipe,
+  getAllRecipes,
+  deleteRecipe,
+} from "../controllers/recipeController.js";
 
-router.post("/processGetAll", processRecipe, async (req, res) => {
-  const collection = req.app.locals.db.collection("recipes");
-  const recipes = await getAllRecipes("", collection);
-  res.render("homepage.html", { recipes });
+router.post(
+  "/processGetAll",
+  processRecipe,
+  getAllRecipes,
+  async (req, res) => {
+    res.render("homepage.html", { recipes: req.recipes });
+  }
+);
+
+router.post("/deleteGetAll", deleteRecipe, getAllRecipes, async (req, res) => {
+  res.render("homepage.html", { recipes: req.recipes });
 });
 
 export default router;

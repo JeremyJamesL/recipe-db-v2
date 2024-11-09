@@ -1,11 +1,20 @@
 <ul class="grid grid-cols-3 gap-3">
   {% for recipe in recipes %}
   <li
-    class="recipe cursor-pointer"
+    class="recipe cursor-pointer relative"
     hx-get="/recipes/{{ recipe.id }}"
     hx-target=".homepage-content"
-    hx-swap="innerHTML"
+    hx-swap="outerHTML"
   >
+    <button
+      class="absolute top-0 right-0 bg-black"
+      hx-post="/api/recipes/deleteGetAll/"
+      hx-vals='{"id": "{{ recipe.id }}"}'
+      hx-target=".homepage-content"
+      hx-swap="outerHTML"
+    >
+      Delete
+    </button>
     <img src="{{ recipe.image }}" alt="" />
     <h2>{{ recipe.title }}</h2>
     <p>{{ recipe.description }}</p>

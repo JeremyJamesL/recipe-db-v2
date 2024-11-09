@@ -21,6 +21,8 @@ const authenticateUser = async function (req, res) {
     secure: true,
     sameSite: "Strict",
   });
+  res.cookie("recipe_user", user.username);
+
   res.status(200).send("JWT has been set in cookie");
 };
 

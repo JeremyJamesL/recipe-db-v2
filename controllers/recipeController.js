@@ -3,13 +3,18 @@ import "dotenv/config";
 import { DOMParser, parseHTML } from "linkedom";
 import OpenAI from "openai";
 
-const getAllRecipes = async function (userID, collection) {
+//userid collection
+const getAllRecipes = async function (req, res, next) {
+  const collection = req.app.locals.db.collection("recipes");
   try {
     const recipes = await collection.find().toArray();
-    return recipes;
+    req.recipes = recipes;
+    next();
   } catch (err) {
-    console.log(err, "error getting recipes from Mongodb");
-    throw new Error("Something went wrong");
+    res.status(400).send({
+      status: fail,
+      message: err.message,
+    });
   }
 };
 
@@ -19,6 +24,21 @@ const getSingleRecipe = async function (recipeID, collection) {
     return recipe;
   } catch (err) {
     console.log(err);
+  }
+};
+
+const deleteRecipe = async function (req, res, next) {
+  const collection = req.app.locals.db.collection("recipes");
+  const { id } = req.body;
+
+  try {
+    await collection.deleteOne({ id });
+    next();
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err.message,
+    });
   }
 };
 
@@ -52,6 +72,7 @@ const processRecipe = async function (req, res, next) {
       ingredients: emptyRecipe.recipeIngredient,
       instructions: emptyRecipe.recipeInstructions.map((el) => el.text),
       url: req.body.url,
+      id: `${req.body.url}${req.cookies.recipe_user}`,
     };
 
     await collection.insertOne(APIRecipe);
@@ -64,4 +85,4 @@ const processRecipe = async function (req, res, next) {
   }
 };
 
-export { getAllRecipes, getSingleRecipe, processRecipe };
+export { getAllRecipes, getSingleRecipe, processRecipe, deleteRecipe };

@@ -18,9 +18,9 @@ router.get("/sign-up", (req, res) => {
   res.render("sign-up.html");
 });
 
-router.get("/home", validateToken, async (req, res) => {
-  const collection = req.app.locals.db.collection("recipes");
-  const recipes = await getAllRecipes("Jeremy89", collection);
+router.get("/home", validateToken, getAllRecipes, async (req, res) => {
+  // This comes from getAllRecipes
+  const recipes = req.recipes;
   res.render("homepage.html", { recipes });
 });
 
