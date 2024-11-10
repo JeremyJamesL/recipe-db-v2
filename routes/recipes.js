@@ -4,14 +4,16 @@ import {
   processRecipe,
   getAllRecipes,
   deleteRecipe,
+  checkRecipeExists,
 } from "../controllers/recipeController.js";
 
 router.post(
   "/processGetAll",
+  checkRecipeExists,
   processRecipe,
   getAllRecipes,
   async (req, res) => {
-    res.render("homepage.html", { recipes: req.recipes });
+    res.render("./subs/recipes.html", { recipes: req.recipes });
   }
 );
 

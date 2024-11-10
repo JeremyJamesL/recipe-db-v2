@@ -12,10 +12,12 @@
     ></script>
     <script src="https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js"></script>
   </head>
-  <body class="bg-slate-800 h-full w-full text-white">
+  <body class="bg-slate-800 h-full w-full text-white" hx-ext="response-targets">
     <main>
       <div class="container">{% block content %}{% endblock %}</div>
     </main>
     <script src="../dist/index.js"></script>
+    <script src="../dist/vendors/htmx.js"></script>
+    <script src="../dist/vendors/htmx-ext-response-targets.js"></script>
   </body>
 </html>

@@ -8,14 +8,29 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   res.render("index.html");
+  // if (req.user) {
+  //   res.redirect("/home");
+  // } else {
+  //   res.render("index.html");
+  // }
 });
 
 router.get("/login", (req, res) => {
-  res.render("login.html");
+  if (req.user) {
+    res.redirect("/home");
+  } else {
+    res.render("login.html");
+  }
 });
 
 router.get("/sign-up", (req, res) => {
   res.render("sign-up.html");
+});
+
+router.post("/logout", (req, res) => {
+  res.clearCookie("recipe_user");
+  res.clearCookie("token");
+  res.set("HX-Redirect", "/").status(200).end();
 });
 
 router.get("/home", validateToken, getAllRecipes, async (req, res) => {

@@ -4,10 +4,11 @@
     class="recipe cursor-pointer relative"
     hx-get="/recipes/{{ recipe.id }}"
     hx-target=".homepage-content"
-    hx-swap="outerHTML"
+    hx-swap="innerHTML"
+    htmx-indicator="#loading"
   >
     <button
-      class="absolute top-0 right-0 bg-black"
+      class="absolute top-0 right-0 bg-black delete-btn"
       hx-post="/api/recipes/deleteGetAll/"
       hx-vals='{"id": "{{ recipe.id }}"}'
       hx-target=".homepage-content"
@@ -16,8 +17,7 @@
       Delete
     </button>
     <img src="{{ recipe.image }}" alt="" />
-    <h2>{{ recipe.title }}</h2>
-    <p>{{ recipe.description }}</p>
+    <h2>{{ recipe.name }}</h2>
   </li>
   {% endfor %}
 </ul>

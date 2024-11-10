@@ -1,7 +1,6 @@
 import got from "got";
 import "dotenv/config";
-import { DOMParser, parseHTML } from "linkedom";
-import OpenAI from "openai";
+import { DOMParser } from "linkedom";
 
 //userid collection
 const getAllRecipes = async function (req, res, next) {
@@ -27,6 +26,23 @@ const getSingleRecipe = async function (recipeID, collection) {
   }
 };
 
+const checkRecipeExists = async function (req, res, next) {
+  const collection = req.app.locals.db.collection("recipes");
+  const { url } = req.body;
+  const user = req.cookies.recipe_user;
+
+  try {
+    const recipeExists = await collection.findOne({ url, user });
+    if (recipeExists == null) {
+      next();
+    } else {
+      throw new Error();
+    }
+  } catch (err) {
+    res.status(400).send("Recipe already exists");
+  }
+};
+
 const deleteRecipe = async function (req, res, next) {
   const collection = req.app.locals.db.collection("recipes");
   const { id } = req.body;
@@ -44,6 +60,7 @@ const deleteRecipe = async function (req, res, next) {
 
 const processRecipe = async function (req, res, next) {
   const collection = req.app.locals.db.collection("recipes");
+  const user = req.cookies.recipe_user;
 
   const { url } = req.body;
 
@@ -65,6 +82,9 @@ const processRecipe = async function (req, res, next) {
       }
     });
 
+    // Get count of recipes in the DB for recipe ID creation
+    const recipeCount = await collection.count();
+
     const APIRecipe = {
       name: emptyRecipe.name,
       author: emptyRecipe.author["@id"],
@@ -72,7 +92,8 @@ const processRecipe = async function (req, res, next) {
       ingredients: emptyRecipe.recipeIngredient,
       instructions: emptyRecipe.recipeInstructions.map((el) => el.text),
       url: req.body.url,
-      id: `${req.body.url}${req.cookies.recipe_user}`,
+      id: `recipe__${recipeCount}`,
+      user,
     };
 
     await collection.insertOne(APIRecipe);
@@ -85,4 +106,10 @@ const processRecipe = async function (req, res, next) {
   }
 };
 
-export { getAllRecipes, getSingleRecipe, processRecipe, deleteRecipe };
+export {
+  getAllRecipes,
+  getSingleRecipe,
+  processRecipe,
+  deleteRecipe,
+  checkRecipeExists,
+};
