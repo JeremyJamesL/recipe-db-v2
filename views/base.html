@@ -5,19 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{title}}</title>
     <link rel="stylesheet" href="../dist/global.css" />
+    {#
     <script
       src="https://unpkg.com/htmx.org@2.0.3"
       integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq"
       crossorigin="anonymous"
     ></script>
     <script src="https://unpkg.com/htmx-ext-response-targets@2.0.0/response-targets.js"></script>
+    #}
   </head>
   <body class="bg-slate-800 h-full w-full text-white" hx-ext="response-targets">
     <main>
       <div class="container">{% block content %}{% endblock %}</div>
     </main>
     <script src="../dist/index.js"></script>
-    <script src="../dist/vendors/htmx.js"></script>
-    <script src="../dist/vendors/htmx-ext-response-targets.js"></script>
+    <script src="../dist/vendors/htmx.min.js"></script>
+    <script src="../dist/vendors/htmx-response-targets.min.js"></script>
   </body>
 </html>

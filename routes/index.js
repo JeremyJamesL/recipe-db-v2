@@ -1,22 +1,21 @@
 import express from "express";
-import validateToken from "../utils/validateToken.js";
+import validateToken from "../middleware/validateToken.js";
 import {
   getAllRecipes,
   getSingleRecipe,
 } from "../controllers/recipeController.js";
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.render("index.html");
-  // if (req.user) {
-  //   res.redirect("/home");
-  // } else {
-  //   res.render("index.html");
-  // }
+router.get("/", validateToken, (req, res) => {
+  if (req.loggedIn) {
+    res.redirect("/home");
+  } else {
+    res.render("index.html");
+  }
 });
 
-router.get("/login", (req, res) => {
-  if (req.user) {
+router.get("/login", validateToken, (req, res) => {
+  if (req.loggedIn) {
     res.redirect("/home");
   } else {
     res.render("login.html");
@@ -34,7 +33,6 @@ router.post("/logout", (req, res) => {
 });
 
 router.get("/home", validateToken, getAllRecipes, async (req, res) => {
-  // This comes from getAllRecipes
   const recipes = req.recipes;
   res.render("homepage.html", { recipes });
 });

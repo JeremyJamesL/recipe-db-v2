@@ -10,7 +10,9 @@ const authenticateUser = async function (req, res) {
   const user = await checkUserExists(username, password, collection);
   const passwordIsCorrect = await bcrypt.compare(password, user.password);
 
-  if (!passwordIsCorrect) res.status(401).send("user not authenticated");
+  if (!passwordIsCorrect) {
+    return res.status(401).send("user not authenticated");
+  }
 
   const token = jwt.sign({ username }, process.env.JWT_SECRET, {
     expiresIn: "2hr",
@@ -22,7 +24,6 @@ const authenticateUser = async function (req, res) {
     sameSite: "Strict",
   });
   res.cookie("recipe_user", user.username);
-
   res.status(200).send("JWT has been set in cookie");
 };
 
