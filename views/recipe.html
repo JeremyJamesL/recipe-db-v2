@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block content %} {% include
+"./components/header.html" %}
 <a
   hx-get="/home"
   hx-target=".homepage-content"
@@ -11,5 +12,15 @@
 <h2>{{ singleRecipe.title }}</h2>
 <img src="{{ singleRecipe.image }}" alt="{{ singleRecipe.title }}" />
 <a href="{{ singleRecipe.url }}">Visit recipe URL</a>
+<div class="uppercase font-bold">{{ singleRecipe.category }}</div>
 
-{% endblock %}
+<h2>Ingredients</h2>
+{% for ingredient in singleRecipe.ingredients %}
+<li>{{ ingredient }}</li>
+{% endfor %}
+
+<h2>Instructions</h2>
+{% for instruction in singleRecipe.instructions %}
+<li class="">{{ instruction }}</li>
+
+{% endfor %} {% endblock %}

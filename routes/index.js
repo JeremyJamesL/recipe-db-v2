@@ -3,6 +3,7 @@ import validateToken from "../middleware/validateToken.js";
 import {
   getAllRecipes,
   getSingleRecipe,
+  getAllFacets,
 } from "../controllers/recipeController.js";
 const router = express.Router();
 
@@ -22,8 +23,12 @@ router.get("/login", validateToken, (req, res) => {
   }
 });
 
-router.get("/sign-up", (req, res) => {
-  res.render("sign-up.html");
+router.get("/sign-up", validateToken, (req, res) => {
+  if (req.loggedIn) {
+    res.redirect("/home");
+  } else {
+    res.render("sign-up.html");
+  }
 });
 
 router.post("/logout", (req, res) => {
@@ -32,10 +37,21 @@ router.post("/logout", (req, res) => {
   res.set("HX-Redirect", "/").status(200).end();
 });
 
-router.get("/home", validateToken, getAllRecipes, async (req, res) => {
-  const recipes = req.recipes;
-  res.render("homepage.html", { recipes });
-});
+router.get(
+  "/home",
+  validateToken,
+  getAllRecipes,
+  getAllFacets,
+  async (req, res) => {
+    if (req.loggedIn) {
+      const recipes = req.recipes;
+      const facets = req.facets;
+      res.render("homepage.html", { recipes, facets });
+    } else {
+      res.redirect("/");
+    }
+  }
+);
 
 router.get("/recipes/:id", async (req, res) => {
   const collection = req.app.locals.db.collection("recipes");

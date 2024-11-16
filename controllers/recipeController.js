@@ -2,7 +2,24 @@ import got from "got";
 import "dotenv/config";
 import { DOMParser } from "linkedom";
 
-//userid collection
+const getAllFacets = async function (req, res, next) {
+  const collection = req.app.locals.db.collection("recipes");
+  const { recipe_user } = req.cookies;
+  const pipeline = [
+    {
+      $match: { user: recipe_user },
+    },
+    {
+      $group: { _id: "$category", count: { $sum: 1 } },
+    },
+  ];
+
+  const facetsAndCounts = await collection.aggregate(pipeline).toArray();
+  req.facets = facetsAndCounts;
+
+  next();
+};
+
 const getAllRecipes = async function (req, res, next) {
   const collection = req.app.locals.db.collection("recipes");
   try {
@@ -62,7 +79,7 @@ const processRecipe = async function (req, res, next) {
   const collection = req.app.locals.db.collection("recipes");
   const user = req.cookies.recipe_user;
 
-  const { url } = req.body;
+  const { url, category } = req.body;
 
   try {
     const response = await got(url);
@@ -93,6 +110,7 @@ const processRecipe = async function (req, res, next) {
       instructions: emptyRecipe.recipeInstructions.map((el) => el.text),
       url: req.body.url,
       id: `recipe__${recipeCount}`,
+      category: category.toLowerCase(),
       user,
     };
 
@@ -112,4 +130,5 @@ export {
   processRecipe,
   deleteRecipe,
   checkRecipeExists,
+  getAllFacets,
 };

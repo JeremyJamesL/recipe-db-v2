@@ -8,7 +8,7 @@ const validateToken = (req, res, next) => {
     req.loggedIn = false;
     next();
   } else {
-    jwt.verify(token, process.env.JWT_SECRET, (err) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
         req.loggedIn = false;
         next();

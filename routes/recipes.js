@@ -5,6 +5,7 @@ import {
   getAllRecipes,
   deleteRecipe,
   checkRecipeExists,
+  getAllFacets,
 } from "../controllers/recipeController.js";
 
 router.post(
@@ -12,6 +13,7 @@ router.post(
   checkRecipeExists,
   processRecipe,
   getAllRecipes,
+  getAllFacets,
   async (req, res) => {
     res.render("./subs/recipes.html", { recipes: req.recipes });
   }

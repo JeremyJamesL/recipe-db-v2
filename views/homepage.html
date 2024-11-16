@@ -1,6 +1,6 @@
-{% extends 'base.html' %} {% block content %} {% include
-"./components/header.html" %}
+{% extends 'base.html' %} {% block content %}
 <div class="homepage-content">
+  {% include "./components/header.html" %}
   <form
     hx-post="/api/recipes/processGetAll"
     hx-target=".recipes"
@@ -10,6 +10,7 @@
     class="mb-5"
   >
     <input type="url" name="url" class="text-black" />
+    <input type="text" name="category" class="text-black" />
     <button type="submit">Submit</button>
   </form>
   <div id="homepage-error"></div>
@@ -34,5 +35,7 @@
       <span class="sr-only">Loading...</span>
     </div>
   </div>
-  <div class="recipes">{% include "./subs/recipes.html" %} {% endblock %}</div>
+  <div class="recipes flex gap-10">
+    {% include "./subs/recipes.html" %} {% endblock %}
+  </div>
 </div>

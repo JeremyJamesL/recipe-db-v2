@@ -1,3 +1,17 @@
+<div>
+  <h2 class="mb-5">Categories</h2>
+  <ul>
+    {% for facet in facets %}
+    <li class="flex gap-2">
+      <span class="font-bold">{{ facet._id }}</span>
+      <span class="bg-black rounded-full p-1 leading-none"
+        >{{ facet.count }}</span
+      >
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
 <ul class="grid grid-cols-3 gap-3">
   {% for recipe in recipes %}
   <li
