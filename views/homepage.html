@@ -1,19 +1,23 @@
 {% extends 'base.html' %} {% block content %}
 <div class="homepage-content">
   {% include "./components/header.html" %}
-  <form
-    hx-post="/api/recipes/processGetAll"
-    hx-target=".recipes"
-    hx-swap="innerHTML"
-    hx-indicator="#loading"
-    hx-target-4**="#homepage-error"
-    class="mb-5"
-  >
-    <input type="url" name="url" class="text-black" />
-    <input type="text" name="category" class="text-black" />
-    <button type="submit">Submit</button>
-  </form>
-  <div id="homepage-error"></div>
+
+  <section>
+    <form
+      hx-post="/api/recipes/processGetAll"
+      hx-target=".recipes"
+      hx-swap="innerHTML"
+      hx-indicator="#loading"
+      hx-target-4**="#homepage-error"
+      class="mb-5"
+    >
+      <input type="url" name="url" class="text-black" />
+      <input type="text" name="category" class="text-black" />
+      <button type="submit">Submit</button>
+    </form>
+    <div id="homepage-error"></div>
+  </section>
+
   <div id="loading" class="htmx-indicator">
     <div role="status">
       <svg
@@ -35,6 +39,23 @@
       <span class="sr-only">Loading...</span>
     </div>
   </div>
+
+  <section div="search" class="mb-10">
+    <form
+      hx-post="/api/recipes/search"
+      hx-target=".recipes"
+      hx-swap="innerHTML"
+      hx-trigger="keyup changed delay:200ms"
+    >
+      <input
+        type="text"
+        name="query"
+        placeholder="Search for recipe name..."
+        class="text-black"
+      />
+    </form>
+  </section>
+
   <div class="recipes flex gap-10">
     {% include "./subs/recipes.html" %} {% endblock %}
   </div>

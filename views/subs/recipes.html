@@ -2,7 +2,12 @@
   <h2 class="mb-5">Categories</h2>
   <ul>
     {% for facet in facets %}
-    <li class="flex gap-2">
+    <li
+      class="flex gap-2 cursor-pointer"
+      hx-get="/api/recipes/category/{{ facet._id }}"
+      hx-target=".recipes"
+      hx-swap="innerHTML"
+    >
       <span class="font-bold">{{ facet._id }}</span>
       <span class="bg-black rounded-full p-1 leading-none"
         >{{ facet.count }}</span
@@ -25,8 +30,8 @@
       class="absolute top-0 right-0 bg-black delete-btn"
       hx-post="/api/recipes/deleteGetAll/"
       hx-vals='{"id": "{{ recipe.id }}"}'
-      hx-target=".homepage-content"
-      hx-swap="outerHTML"
+      hx-target=".recipes"
+      hx-swap="innerHTML"
     >
       Delete
     </button>

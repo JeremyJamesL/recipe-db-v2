@@ -3,20 +3,34 @@ import "dotenv/config";
 import { DOMParser } from "linkedom";
 
 const getAllFacets = async function (req, res, next) {
-  const collection = req.app.locals.db.collection("recipes");
+  const { query } = req.body;
   const { recipe_user } = req.cookies;
-  const pipeline = [
-    {
-      $match: { user: recipe_user },
-    },
-    {
-      $group: { _id: "$category", count: { $sum: 1 } },
-    },
-  ];
+  let pipeline;
+  const pipelineGroup = {
+    $group: { _id: "$category", count: { $sum: 1 } },
+  };
 
+  // If the user has searched, then we need to take that search query into account in our pipeline
+  // Pipeline group will remain the same for facet aggregation, so is stored in pipelineGroup
+  if (query !== undefined) {
+    pipeline = [
+      {
+        $match: { user: recipe_user, name: { $regex: query, $options: "i" } },
+      },
+      pipelineGroup,
+    ];
+  } else {
+    pipeline = [
+      {
+        $match: { user: recipe_user },
+      },
+      pipelineGroup,
+    ];
+  }
+
+  const collection = req.app.locals.db.collection("recipes");
   const facetsAndCounts = await collection.aggregate(pipeline).toArray();
   req.facets = facetsAndCounts;
-
   next();
 };
 
@@ -123,6 +137,11 @@ const processRecipe = async function (req, res, next) {
     });
   }
 };
+// it's getting messy!
+// const getRecipesByCategory = async function (req, res, next) {
+//   const collection = req.app.locals.db.collection("recipes");
+//   const recipes = await collection.find({ category: req.params.id }).toArray();
+// };
 
 export {
   getAllRecipes,
@@ -131,4 +150,5 @@ export {
   deleteRecipe,
   checkRecipeExists,
   getAllFacets,
+  getRecipesByCategory,
 };
