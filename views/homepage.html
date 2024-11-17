@@ -45,14 +45,17 @@
       hx-post="/api/recipes/search"
       hx-target=".recipes"
       hx-swap="innerHTML"
-      hx-trigger="keyup changed delay:200ms"
+      hx-trigger="input delay:200ms"
+      id="search-form"
     >
       <input
         type="text"
         name="query"
         placeholder="Search for recipe name..."
         class="text-black"
+        id="search-input"
       />
+      <button id="clear-search" class="hidden">Clear search</button>
     </form>
   </section>
 

@@ -9,10 +9,6 @@ import {
   getAllFacets,
 } from "../controllers/recipeController.js";
 
-// router.get("/category/:id", getRecipesByCategory, (req, res) => {
-//   res.render("./subs/recipes.html", recipoe)
-// });
-
 router.post(
   "/processGetAll",
   checkRecipeExists,
@@ -54,6 +50,13 @@ router.post("/search", getAllFacets, async (req, res) => {
     res.send("<h2>No results, try refining your search!</h2>");
   else
     res.render("./subs/recipes.html", { recipes: results, facets: req.facets });
+});
+
+router.get("/category/:id", getRecipesByCategory, getAllFacets, (req, res) => {
+  res.render("./subs/recipes.html", {
+    recipes: req.recipes,
+    facets: req.facets,
+  });
 });
 
 export default router;

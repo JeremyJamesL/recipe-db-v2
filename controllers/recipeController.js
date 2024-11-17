@@ -3,30 +3,47 @@ import "dotenv/config";
 import { DOMParser } from "linkedom";
 
 const getAllFacets = async function (req, res, next) {
+  // If user has selected a category, we filter on that in `match`, otherwise it's an empty string
+  const selectedCategory = req.params.id || null;
+
   const { query } = req.body;
   const { recipe_user } = req.cookies;
-  let pipeline;
+  let match;
   const pipelineGroup = {
     $group: { _id: "$category", count: { $sum: 1 } },
   };
 
-  // If the user has searched, then we need to take that search query into account in our pipeline
-  // Pipeline group will remain the same for facet aggregation, so is stored in pipelineGroup
-  if (query !== undefined) {
-    pipeline = [
-      {
-        $match: { user: recipe_user, name: { $regex: query, $options: "i" } },
+  // Need to determine what the current state of search is (has the user text queries, selected a category etc).
+  // This determines how the aggregation is constructed
+  if (selectedCategory !== null && query !== undefined) {
+    match = {
+      $match: {
+        user: recipe_user,
+        category: selectedCategory,
+        name: { $regex: query, $options: "i" },
       },
-      pipelineGroup,
-    ];
+    };
+  } else if (selectedCategory !== null && query == undefined) {
+    match = {
+      $match: {
+        user: recipe_user,
+        category: selectedCategory,
+      },
+    };
+  } else if (selectedCategory == null && query !== undefined) {
+    match = {
+      $match: {
+        user: recipe_user,
+        name: { $regex: query, $options: "i" },
+      },
+    };
   } else {
-    pipeline = [
-      {
-        $match: { user: recipe_user },
-      },
-      pipelineGroup,
-    ];
+    match = {
+      $match: { user: recipe_user },
+    };
   }
+
+  const pipeline = [match, pipelineGroup];
 
   const collection = req.app.locals.db.collection("recipes");
   const facetsAndCounts = await collection.aggregate(pipeline).toArray();
@@ -137,18 +154,20 @@ const processRecipe = async function (req, res, next) {
     });
   }
 };
-// it's getting messy!
-// const getRecipesByCategory = async function (req, res, next) {
-//   const collection = req.app.locals.db.collection("recipes");
-//   const recipes = await collection.find({ category: req.params.id }).toArray();
-// };
+
+const getRecipesByCategory = async function (req, res, next) {
+  const collection = req.app.locals.db.collection("recipes");
+  const recipes = await collection.find({ category: req.params.id }).toArray();
+  req.recipes = recipes;
+  next();
+};
 
 export {
+  getRecipesByCategory,
   getAllRecipes,
   getSingleRecipe,
   processRecipe,
   deleteRecipe,
   checkRecipeExists,
   getAllFacets,
-  getRecipesByCategory,
 };

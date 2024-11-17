@@ -1,8 +1,12 @@
 <div>
   <h2 class="mb-5">Categories</h2>
+  <button id="clear-refinements" class="bg-white text-black hidden">
+    Clear refinements
+  </button>
   <ul>
     {% for facet in facets %}
-    <li
+    <input
+      type="checkbox"
       class="flex gap-2 cursor-pointer"
       hx-get="/api/recipes/category/{{ facet._id }}"
       hx-target=".recipes"
