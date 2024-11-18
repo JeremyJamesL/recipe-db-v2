@@ -1,21 +1,24 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block content %} {% include
+"./components/header.html" %}
 <div class="homepage-content">
-  {% include "./components/header.html" %}
-
-  <section>
+  <section div="search" class="">
     <form
-      hx-post="/api/recipes/processGetAll"
+      hx-post="/api/recipes/search"
       hx-target=".recipes"
       hx-swap="innerHTML"
-      hx-indicator="#loading"
-      hx-target-4**="#homepage-error"
-      class="mb-5"
+      hx-trigger="input delay:200ms"
+      id="search-form"
     >
-      <input type="url" name="url" class="text-black" />
-      <input type="text" name="category" class="text-black" />
-      <button type="submit">Submit</button>
+      <input
+        type="text"
+        name="query"
+        placeholder="Search for recipe name..."
+        class="w-full overflow-hidden rounded-xl text-[#1b130d] focus:outline-0 bg-[#f3ece7] focus:border-none h-full placeholder:text-[#9a6c4c] p-3"
+        id="search-input"
+      />
+
+      <button id="clear-search" class="hidden">Clear search</button>
     </form>
-    <div id="homepage-error"></div>
   </section>
 
   <div id="loading" class="htmx-indicator">
@@ -40,26 +43,22 @@
     </div>
   </div>
 
-  <section div="search" class="mb-10">
+  <div class="recipes">{% include "./subs/recipes.html" %}</div>
+
+  <section>
     <form
-      hx-post="/api/recipes/search"
+      hx-post="/api/recipes/processGetAll"
       hx-target=".recipes"
       hx-swap="innerHTML"
-      hx-trigger="input delay:200ms"
-      id="search-form"
+      hx-indicator="#loading"
+      hx-target-4**="#homepage-error"
+      class="mb-5"
     >
-      <input
-        type="text"
-        name="query"
-        placeholder="Search for recipe name..."
-        class="text-black"
-        id="search-input"
-      />
-      <button id="clear-search" class="hidden">Clear search</button>
+      <input type="url" name="url" class="text-black" />
+      <input type="text" name="category" class="text-black" />
+      <button type="submit">Submit</button>
     </form>
+    <div id="homepage-error"></div>
   </section>
-
-  <div class="recipes flex gap-10">
-    {% include "./subs/recipes.html" %} {% endblock %}
-  </div>
 </div>
+{% include "./components/footer.html" %} {% endblock %}

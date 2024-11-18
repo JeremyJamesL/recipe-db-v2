@@ -56,6 +56,15 @@ router.get("/category/:id", getRecipesByCategory, getAllFacets, (req, res) => {
   res.render("./subs/recipes.html", {
     recipes: req.recipes,
     facets: req.facets,
+    selectedFacet: req.params.id,
+    isChecked: req.query.isChecked,
+  });
+});
+
+router.get("/allRecipes", getAllRecipes, getAllFacets, (req, res) => {
+  res.render("./subs/recipes.html", {
+    recipes: req.recipes,
+    facets: req.facets,
   });
 });
 
