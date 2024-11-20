@@ -7,6 +7,7 @@ import {
 } from "../controllers/recipeController.js";
 const router = express.Router();
 
+// Page requests
 router.get("/", validateToken, (req, res) => {
   if (req.loggedIn) {
     res.redirect("/home");
@@ -52,6 +53,19 @@ router.get(
     }
   }
 );
+
+// Content requests
+router.get("/submitForm", getAllFacets, (req, res) => {
+  res.render("./components/recipe-form.html", {
+    selectOptions: req.facets,
+  });
+});
+
+router.get("/homeContent", getAllRecipes, getAllFacets, async (req, res) => {
+  const recipes = req.recipes;
+  const facets = req.facets;
+  res.render("homepage.html", { recipes, facets });
+});
 
 router.get("/recipes/:id", async (req, res) => {
   const collection = req.app.locals.db.collection("recipes");

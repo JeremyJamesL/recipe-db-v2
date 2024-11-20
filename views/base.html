@@ -21,12 +21,11 @@
     #}
   </head>
   <body
-    class="bg-stone-50 text-neutral-900 h-full w-full font-patrick text-xl"
+    class="bg-stone-50 text-neutral-900 h-full w-full font-patrick text-xl pb-40"
     hx-ext="response-targets"
   >
-    <main class="py-5">
-      <div class="container">{% block content %}{% endblock %}</div>
-    </main>
+    {% block content %}{% endblock %}
+
     <script src="../dist/index.js"></script>
     <script src="../dist/vendors/htmx.min.js"></script>
     <script src="../dist/vendors/htmx-response-targets.min.js"></script>

@@ -47,7 +47,9 @@ const getAllFacets = async function (req, res, next) {
 
   const collection = req.app.locals.db.collection("recipes");
   const facetsAndCounts = await collection.aggregate(pipeline).toArray();
-  req.facets = facetsAndCounts;
+  const filteredFacets = facetsAndCounts.filter((facet) => facet._id !== "");
+  console.log(filteredFacets);
+  req.facets = filteredFacets;
   next();
 };
 
