@@ -67,6 +67,19 @@ router.get("/homeContent", getAllRecipes, getAllFacets, async (req, res) => {
   res.render("homepage.html", { recipes, facets });
 });
 
+router.get("/newCategoryInput", (req, res) => {
+  res.render("./components/recipe-category-mode.html");
+});
+
+router.post("/updatedFormWithNewCat", getAllFacets, (req, res) => {
+  const { new_category } = req.body;
+  req.facets.push({ _id: new_category, count: 0 });
+  res.render("./components/recipe-form.html", {
+    selectOptions: req.facets,
+    showNewCatBtn: false,
+  });
+});
+
 router.get("/recipes/:id", async (req, res) => {
   const collection = req.app.locals.db.collection("recipes");
   const recipe = await getSingleRecipe(req.params.id, collection);
