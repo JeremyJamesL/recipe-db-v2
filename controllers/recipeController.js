@@ -158,8 +158,19 @@ const processRecipe = async function (req, res, next) {
 };
 
 const getRecipesByCategory = async function (req, res, next) {
+  const { query } = req.query;
+  let constructedQuery;
+  if (query !== "") {
+    constructedQuery = {
+      category: req.params.id,
+      name: { $regex: query, $options: "i" },
+    };
+  } else {
+    constructedQuery = { category: req.params.id };
+  }
+
   const collection = req.app.locals.db.collection("recipes");
-  const recipes = await collection.find({ category: req.params.id }).toArray();
+  const recipes = await collection.find(constructedQuery).toArray();
   req.recipes = recipes;
   next();
 };

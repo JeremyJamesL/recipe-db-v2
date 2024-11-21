@@ -5,14 +5,14 @@
   <ul class="flex gap-3 mb-6">
     {% for facet in facets %}
     <li>
-      <input type="checkbox" class="cursor-pointer" {% if isChecked === "true"
-      %} hx-get="/api/recipes/allRecipes" {% else %}
+      <input type="checkbox" class="cursor-pointer" {% if isChecked === "true"%}
+      hx-get="/api/recipes/allRecipes" {% else %}
       hx-get="/api/recipes/category/{{ facet._id }}" {% endif %}
-      hx-target=".recipes" hx-swap="innerHTML" hx-trigger="change"
-      hx-vals='js:{isChecked: event.target.checked}' id="{{ facet._id }}" {# if
-      the facet is the one that the user has selected, send back a checked
-      checkbox #} {% if selectedFacet === facet._id and isChecked === "true" %}
-      checked {% endif %} >
+      hx-include="#search-input" hx-target=".recipes" hx-swap="innerHTML"
+      hx-trigger="change" hx-vals='js:{isChecked: event.target.checked}' id="{{
+      facet._id }}" {# if the facet is the one that the user has selected, send
+      back a checked checkbox #} {% if selectedFacet === facet._id and isChecked
+      === "true" %} checked {% endif %} >
       <label for="{{ facet._id }}" class="font-bold">{{ facet._id }}</label>
     </li>
     {% endfor %}

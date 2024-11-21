@@ -64,7 +64,7 @@ router.get("/submitForm", getAllFacets, (req, res) => {
 router.get("/homeContent", getAllRecipes, getAllFacets, async (req, res) => {
   const recipes = req.recipes;
   const facets = req.facets;
-  res.render("homepage.html", { recipes, facets });
+  res.render("./components/homepage-content.html", { recipes, facets });
 });
 
 router.get("/newCategoryInput", (req, res) => {

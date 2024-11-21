@@ -16,7 +16,7 @@ router.post(
   getAllRecipes,
   getAllFacets,
   async (req, res) => {
-    res.render("./subs/recipes.html", {
+    res.render("./homepage.html", {
       recipes: req.recipes,
       facets: req.facets,
     });
